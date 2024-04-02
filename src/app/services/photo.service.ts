@@ -57,29 +57,29 @@ export class PhotoService {
   }
 
   async renamePicture(photo: UserPhoto, index: number, name: string) {
-    this.photos[index].filepath = name;
-
-    Preferences.set({
-      key: `${this.PHOTO_STORAGE}-${this.type1Select}-${this.type2Select}`,
-      value: JSON.stringify(this.photos.map((photo) => photo.filepath)),
-    });
-
-    Filesystem.rename({
+    await Filesystem.rename({
       from: photo.filepath,
       to: name,
       directory: Directory.External
     })
+
+    this.photos[index].filepath = name;
+
+    await Preferences.set({
+      key: `${this.PHOTO_STORAGE}-${this.type1Select}-${this.type2Select}`,
+      value: JSON.stringify(this.photos.map((photo) => photo.filepath)),
+    });
   }
 
   async deletePicture(photo: UserPhoto, index: number) {
     this.photos.splice(index, 1);
 
-    Preferences.set({
+    await Preferences.set({
       key: `${this.PHOTO_STORAGE}-${this.type1Select}-${this.type2Select}`,
       value: JSON.stringify(this.photos.map((photo) => photo.filepath)),
     });
 
-    Filesystem.deleteFile({
+    await Filesystem.deleteFile({
       path: photo.filepath,
       directory: Directory.External
     })
@@ -101,7 +101,7 @@ export class PhotoService {
 
     // Retrieve cached photo array data
     const { value } = await Preferences.get({ key: `${this.PHOTO_STORAGE}-${this.type1Select}-${this.type2Select}` });
-    this.photos = (value ? JSON.parse(value).map((str: any) => ({filepath: str})) : []) as UserPhoto[];
+    this.photos = (value ? JSON.parse(value).map((str: any) => ({ filepath: str })) : []) as UserPhoto[];
     // Display the photo by reading into base64 format
     for (let photo of this.photos.slice(0, 20)) {
       // Read each saved photo's data from the Filesystem

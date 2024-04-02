@@ -13,16 +13,9 @@ export class PageTakePhotoComponent implements OnInit {
 
   presentingElement: HTMLElement | null = null;
   modal = {
-    open: false,
     imgSrc: '',
     title: ''
   }
-
-  scrollEnd() {
-    this.ioncontent.getScrollElement().then(element => this.photoService.loadByScroll(element.scrollTop))
-  }
-
-
   constructor(public actionSheetController: ActionSheetController, public alertController: AlertController, public modalController: ModalController, public photoService: PhotoService) { }
 
   async ngOnInit() {
@@ -30,8 +23,8 @@ export class PageTakePhotoComponent implements OnInit {
     this.presentingElement = document.body;
   }
 
-  scroll(val: any) {
-    console.log(val)
+  scrollEnd() {
+    this.ioncontent.getScrollElement().then(element => this.photoService.loadByScroll(element.scrollTop))
   }
 
   typeChange() {
