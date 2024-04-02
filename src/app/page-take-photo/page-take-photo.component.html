@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      拍照
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- <ion-list>
+  <ion-item> -->
+    <ion-select label="选择大类" placeholder="请选择" [(ngModel)]="photoService.type1Select" (ionChange)="typeChange()">
+      <ion-select-option *ngFor="let option of photoService.type1Options" [value]="option.value">{{option.label}}</ion-select-option>
+    </ion-select>
+  <!-- </ion-item>
+  <ion-item> -->
+    <ion-select label="选择小类" placeholder="请选择" [(ngModel)]="photoService.type2Select" (ionChange)="typeChange()">
+      <ion-select-option *ngFor="let option of photoService.type2Options" [value]="option.value">{{option.label}}</ion-select-option>
+    </ion-select>
+  <!-- </ion-item>
+</ion-list> -->
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4" *ngFor="let photo of photoService.photos;index as i">
+        <ion-card>
+          <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, i)"></ion-img>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" class="btn-take-photo" (click)="addPhotoToGallery()">拍照</ion-button>
+  </ion-toolbar>
+</ion-footer>
