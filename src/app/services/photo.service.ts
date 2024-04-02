@@ -79,7 +79,7 @@ export class PhotoService {
       // Read each saved photo's data from the Filesystem
       const readFile = await Filesystem.readFile({
         path: photo.filepath,
-        directory: Directory.Data,
+        directory: Directory.Documents,
       });
 
       // Web platform only: Load the photo as base64 data
@@ -96,7 +96,7 @@ export class PhotoService {
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
-      directory: Directory.Data
+      directory: Directory.Documents
     });
 
     Preferences.set({
