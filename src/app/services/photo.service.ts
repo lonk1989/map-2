@@ -8,8 +8,8 @@ import { allTypes, allTypes1, allTypes21 } from '../page-take-photo/page-take-ph
   providedIn: 'root'
 })
 export class PhotoService {
-  public type1Select = '';
-  public type2Select = '';
+  public type1Select = '01';
+  public type2Select = '01';
   public type1Options = allTypes1;
   public type2Options = allTypes21;
   public photos: UserPhoto[] = [];
@@ -92,7 +92,7 @@ export class PhotoService {
     const base64Data = await this.readAsBase64(photo);
 
     // Write the file to the data directory
-    const fileName = `${this.type1Select}/${this.type2Select}/${Date.now()}.jpeg`;
+    const fileName = `${this.type1Select}-${this.type2Select}-${Date.now()}.jpeg`;
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
