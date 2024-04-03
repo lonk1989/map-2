@@ -4,7 +4,6 @@ import { Filesystem, Directory, ReaddirResult } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { allTypes, allTypes1, allTypes21 } from '../page-take-photo/page-take-photo.config';
 import { DatePipe } from '@angular/common';
-import { Plugins } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -153,18 +152,6 @@ export class PhotoService {
     }
   }
 
-  private async updateMediaDatabase(filePath: string) {
-    try {
-      const { MediaScannerPlugin } = Plugins;
-      await MediaScannerPlugin['scanFile']({ filePath });
-      console.log('File scanned successfully');
-      this.fileGroup.push({ createDate: 'File scanned successfully', count: 1 })
-    } catch (error) {
-      console.error('Failed to scan file', error);
-      this.fileGroup.push({ createDate: 'Failed to scan file', count: 1 })
-    }
-  }
-
   private incPointName() {
     this.pointName = this.pointName.replace(/\d+$/, (match: string) => {
       if (match.indexOf('0') === 0) {
@@ -190,8 +177,6 @@ export class PhotoService {
       data: base64Data,
       directory: Directory.ExternalStorage
     });
-
-    this.updateMediaDatabase(fileName);
     // Use webPath to display the new image instead of base64 since it's
     // already loaded into memory
     return {
