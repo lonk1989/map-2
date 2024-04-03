@@ -4,6 +4,7 @@ import { Filesystem, Directory, ReaddirResult } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { allTypes, allTypes1, allTypes21 } from '../page-take-photo/page-take-photo.config';
 import { DatePipe } from '@angular/common';
+import { Plugins } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -137,8 +138,10 @@ export class PhotoService {
   }
 
   async loadByScroll(scrollY: number) {
+    const currentLimit = this.currentLimit;
     const nextLimit = 20 + Math.floor(scrollY / 60);
-    for (let photo of this.photos.slice(this.currentLimit, nextLimit)) {
+    this.currentLimit = nextLimit;
+    for (let photo of this.photos.slice(currentLimit, nextLimit)) {
       // Read each saved photo's data from the Filesystem
       const readFile = await Filesystem.readFile({
         path: photo.filepath,
@@ -148,7 +151,18 @@ export class PhotoService {
       // Web platform only: Load the photo as base64 data
       photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
     }
-    this.currentLimit = nextLimit;
+  }
+
+  private async updateMediaDatabase(filePath: string) {
+    try {
+      const { MediaScannerPlugin } = Plugins;
+      await MediaScannerPlugin['scanFile']({ filePath });
+      console.log('File scanned successfully');
+      this.fileGroup.push({ createDate: 'File scanned successfully', count: 1 })
+    } catch (error) {
+      console.error('Failed to scan file', error);
+      this.fileGroup.push({ createDate: 'Failed to scan file', count: 1 })
+    }
   }
 
   private incPointName() {
@@ -176,6 +190,8 @@ export class PhotoService {
       data: base64Data,
       directory: Directory.ExternalStorage
     });
+
+    this.updateMediaDatabase(fileName);
     // Use webPath to display the new image instead of base64 since it's
     // already loaded into memory
     return {
