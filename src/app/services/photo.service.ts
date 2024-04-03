@@ -62,7 +62,7 @@ export class PhotoService {
     await Filesystem.rename({
       from: photo.filepath,
       to: name,
-      directory: Directory.ExternalStorage
+      directory: Directory.External
     })
 
     this.photos[index].filepath = name;
@@ -83,7 +83,7 @@ export class PhotoService {
 
     await Filesystem.deleteFile({
       path: photo.filepath,
-      directory: Directory.ExternalStorage
+      directory: Directory.External
     })
   }
 
@@ -128,7 +128,7 @@ export class PhotoService {
       // Read each saved photo's data from the Filesystem
       const readFile = await Filesystem.readFile({
         path: photo.filepath,
-        directory: Directory.ExternalStorage,
+        directory: Directory.External,
       });
 
       // Web platform only: Load the photo as base64 data
@@ -144,7 +144,7 @@ export class PhotoService {
       // Read each saved photo's data from the Filesystem
       const readFile = await Filesystem.readFile({
         path: photo.filepath,
-        directory: Directory.ExternalStorage,
+        directory: Directory.External,
       });
 
       // Web platform only: Load the photo as base64 data
@@ -175,7 +175,7 @@ export class PhotoService {
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
-      directory: Directory.ExternalStorage
+      directory: Directory.External
     });
     // Use webPath to display the new image instead of base64 since it's
     // already loaded into memory
