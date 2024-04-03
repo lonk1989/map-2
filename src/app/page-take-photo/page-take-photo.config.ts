@@ -14,6 +14,9 @@ export const allTypes1 = [{
 }, {
     value: '05',
     label: '其他设施'
+}, {
+    value: '06',
+    label: '其他设施2'
 },]
 export const allTypes21 = [
     {
@@ -523,6 +526,25 @@ export const allTypes25 = [
     },
 ]
 
+export const allTypes26 = [
+    {
+        value: '01',
+        label: '门牌号'
+    },
+    {
+        value: '02',
+        label: '小区名称'
+    },
+    {
+        value: '03',
+        label: '楼栋号'
+    },
+    {
+        value: '04',
+        label: '单元号'
+    },
+]
+
 export const allTypes: any = {
     allTypes1: allTypes1,
     allTypes201: allTypes21,
@@ -530,4 +552,5 @@ export const allTypes: any = {
     allTypes203: allTypes23,
     allTypes204: allTypes24,
     allTypes205: allTypes25,
+    allTypes206: allTypes26,
 }
