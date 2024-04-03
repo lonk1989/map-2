@@ -3,12 +3,16 @@
     <ion-title>
       拍照
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="statistics()" id="modal-statistics">统计</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content #ioncontent (ionScrollEnd)="scrollEnd()" [scrollEvents]="true">
   <ion-list>
     <ion-item>
-      <ion-input label="点名" labelPlacement="floating" placeholder="点名由字母及数字组成" [(ngModel)]="photoService.pointName"></ion-input>
+      <ion-input label="点名" labelPlacement="floating" placeholder="点名由字母及数字组成"
+        [(ngModel)]="photoService.pointName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-select label="选择大类" placeholder="请选择" [(ngModel)]="photoService.type1Select" (ionChange)="typeChange()">
@@ -43,6 +47,7 @@
     <ion-button expand="block" class="btn-take-photo" (click)="addPhotoToGallery()">拍照</ion-button>
   </ion-toolbar>
 </ion-footer>
+
 <ion-modal #ionmodal [presentingElement]="presentingElement">
   <ng-template>
     <ion-header>
@@ -55,6 +60,24 @@
     </ion-header>
     <ion-content>
       <ion-img [src]="modal.imgSrc" />
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #ionmodalStatistics trigger="modal-statistics" [presentingElement]="presentingElement">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>统计</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="ionmodalStatistics.dismiss()">关闭</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item *ngFor="let group of photoService.fileGroup">{{group.createDate}} 照片数量：{{group.count}}</ion-item>
+      </ion-list>
     </ion-content>
   </ng-template>
 </ion-modal>

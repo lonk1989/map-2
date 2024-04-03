@@ -35,6 +35,10 @@ export class PageTakePhotoComponent implements OnInit {
     this.photoService.addNewToGallery();
   }
 
+  statistics() {
+    this.photoService.fileStatistics();
+  }
+
   async showPhoto(photo: UserPhoto) {
     this.modal.imgSrc = photo.webviewPath ?? '';
     this.modal.title = photo.filepath;

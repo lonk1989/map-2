@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem, Directory, ReaddirResult } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { allTypes, allTypes1, allTypes21 } from '../page-take-photo/page-take-photo.config';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
+  public fileGroup: any = [];
   public pointName = '';
   public type1Select = '01';
   public type2Select = '01';
@@ -20,7 +22,7 @@ export class PhotoService {
   private TYPE2_STORAGE: string = 'type2';
   private currentLimit = 20;
 
-  constructor() { }
+  constructor(private datePipe: DatePipe) { }
 
   public typeChange() {
     this.currentLimit = 20;
@@ -83,6 +85,25 @@ export class PhotoService {
       path: photo.filepath,
       directory: Directory.ExternalStorage
     })
+  }
+
+  public async fileStatistics() {
+    const fileGroup: FileGroupMap = {};
+    const result = await Filesystem.readdir({
+      path: '',
+      directory: Directory.External
+    })
+    if (Array.isArray(result?.files)) {
+      result.files.forEach(file => {
+        const createDate = this.datePipe.transform(file.ctime, 'yyyy年MM月dd日') ?? '';
+        if (!fileGroup[createDate]) {
+          fileGroup[createDate] = 1;
+        } else {
+          fileGroup[createDate] += 1;
+        }
+      })
+    }
+    this.fileGroup = Object.keys(fileGroup).map(key => ({ createDate: key, count: fileGroup[key] }))
   }
 
   async loadSaved(isFirst?: boolean) {
@@ -149,7 +170,7 @@ export class PhotoService {
     const base64Data = await this.readAsBase64(photo);
 
     // Write the file to the data directory
-    const fileName = `${this.pointName}-${this.type1Select}-${this.type2Select}-${Date.now()}.jpeg`;
+    const fileName = `${this.pointName}-${this.type1Select}${this.type2Select}-${this.datePipe.transform(Date.now(), 'yyyyMMddHHmmssSSS')}.jpeg`;
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
@@ -184,4 +205,13 @@ export class PhotoService {
 export interface UserPhoto {
   filepath: string;
   webviewPath?: string;
+}
+
+export interface FileGroup {
+  createDate: string;
+  count: number;
+}
+
+export interface FileGroupMap {
+  [prop: string]: number;
 }
