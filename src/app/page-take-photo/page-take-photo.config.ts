@@ -13,10 +13,10 @@ export const allTypes1 = [{
     label: '园林绿化设施'
 }, {
     value: '05',
-    label: '其他设施'
+    label: '其他部件'
 }, {
     value: '06',
-    label: '其他设施2'
+    label: '其他部件2'
 },]
 export const allTypes21 = [
     {
