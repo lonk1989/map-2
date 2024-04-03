@@ -529,4 +529,5 @@ export const allTypes: any = {
     allTypes202: allTypes22,
     allTypes203: allTypes23,
     allTypes204: allTypes24,
+    allTypes205: allTypes25,
 }
