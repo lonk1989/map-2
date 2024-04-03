@@ -95,6 +95,7 @@ export class PhotoService {
     })
     if (Array.isArray(result?.files)) {
       result.files.forEach(file => {
+        if (file.name === 'Pictures') return;
         const createDate = this.datePipe.transform(file.ctime, 'yyyy年MM月dd日') ?? '';
         if (!fileGroup[createDate]) {
           fileGroup[createDate] = 1;
