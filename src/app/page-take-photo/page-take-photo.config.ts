@@ -543,6 +543,11 @@ export const allTypes26 = [
         value: '04',
         label: '单元号'
     },
+    {
+        value: '99',
+        label: '其他'
+    },
+
 ]
 
 export const allTypes: any = {
